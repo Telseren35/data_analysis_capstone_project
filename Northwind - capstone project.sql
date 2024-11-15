@@ -1,58 +1,58 @@
 
 --Northwind - capstone project 
 
---Toplam Sipariş Sayısı
+--Total orders
 select 
- count (order_id) as toplam_siparis
+ count (order_id) as total_orders
  from orders
 
 select * from order_details
 
---Toplam Sipariş Miktarı
-SELECT SUM(Quantity) AS ToplamSiparisMiktari
+--total orders quantity
+SELECT SUM(Quantity) AS Total_orders_quantity
 FROM Order_details;
 
 
 
----SATIŞ ve SİPARİŞ ANALİZİ
+---SALES and ORDERS ANALYSES
 
--- Toplam Satış
+-- Total Sales
 SELECT
- floor (SUM(od.unit_price * od.quantity)) AS toplam_satis
+ floor (SUM(od.unit_price * od.quantity)) AS total_sales
 FROM order_details od
 JOIN orders o ON od.order_id = o.order_id
 JOIN customers c ON o.customer_id = c.customer_id;
  
 
 
---Hangi üründen kaç adet satılmış ürün başına toplam gelir (77 adet ürün mevcut)
+--How many units of which product were sold? total revenue per product (77 products available)
 SELECT p.product_name,
-       SUM(od.quantity) AS toplam_miktar,
-       floor (SUM(od.unit_price * od.quantity) ) AS toplam_gelir
+       SUM(od.quantity) AS total_quantity,
+       floor (SUM(od.unit_price * od.quantity) ) AS total_revenue
 FROM order_details od
 JOIN products p ON od.product_id = p.product_id
 GROUP BY p.product_name
-ORDER BY toplam_gelir desc
+ORDER BY total_revenue desc
 
--- kategori bazında satılan ürünün miktarı
-SELECT c.category_name, p.product_name, SUM(od.quantity) AS toplam_miktar
+-- Amount of products sold by category
+SELECT c.category_name, p.product_name, SUM(od.quantity) AS total_quantity
 FROM order_details od
 JOIN products p ON od.product_id = p.product_id
 JOIN categories c ON p.category_id = c.category_id
 GROUP BY c.category_name, p.product_name
-ORDER BY c.category_name, toplam_miktar DESC
+ORDER BY c.category_name, total_quantity DESC
 
---En Çok hangi kategori satmış ve toplam miktarı
+--Best selling category and total quantity
 SELECT c.category_name,
-        SUM(od.quantity) AS toplam_miktar,
-        FLOOR (SUM(od.quantity * od.unit_price)) AS toplam_satis
+        SUM(od.quantity) AS total_quantity,
+        FLOOR (SUM(od.quantity * od.unit_price)) AS total_sales
 FROM order_details od
 JOIN products p ON od.product_id = p.product_id
 JOIN categories c ON p.category_id = c.category_id
 GROUP BY c.category_name
-ORDER BY toplam_satis DESC;
+ORDER BY total_sales DESC;
 
----Ülkelere göre Toplam satışlar
+---Total sales by country
 SELECT 
     o.ship_country, 
    floor(SUM(od.quantity * od.unit_price)) AS total_sales
@@ -65,22 +65,22 @@ GROUP BY
 ORDER BY 
     total_sales DESC
 	
----Aylara göre toplam sipariş miktarları
-SELECT EXTRACT(YEAR FROM o.order_date) AS yil,
-       EXTRACT(MONTH FROM o.order_date) AS ay,
-       COUNT(o.order_id) AS toplam_siparis
+---Total sales amount by month
+SELECT EXTRACT(YEAR FROM o.order_date) AS y,
+       EXTRACT(MONTH FROM o.order_date) AS m,
+       COUNT(o.order_id) AS total_orders
 FROM orders o
 GROUP BY EXTRACT(YEAR FROM o.order_date), EXTRACT(MONTH FROM o.order_date)
-ORDER BY yil, ay;
+ORDER BY y, m;
 
----Yıllara göre toplam sipariş miktarı
-SELECT EXTRACT(YEAR FROM o.order_date) AS yil,
-       COUNT(o.order_id) AS toplam_siparis
+---total sales amount by year
+SELECT EXTRACT(YEAR FROM o.order_date) AS y,
+       COUNT(o.order_id) AS total_orders
 FROM orders o
 GROUP BY EXTRACT(YEAR FROM o.order_date)
-ORDER BY yil;
+ORDER BY y;
 
--- Ülkelere göre satılan ürünler ve miktarları
+--  Products sold and their quantities by country
 SELECT
     o.ship_country,
     p.product_name,
@@ -99,52 +99,52 @@ ORDER BY
 
 ----------------------------------------------------
 
----MÜŞTERİ ANALİZİ
+---CUSTOMER ANALYSES
 
 
---en çok gelir sağlayanlar
+--companies that generate the most revenue
 
 SELECT C.company_name, 
-floor(SUM(OD.unit_price * OD.quantity * (1 - OD.discount))) AS ToplamGelir
+floor(SUM(OD.unit_price * OD.quantity * (1 - OD.discount))) AS total_revenue
 FROM orders O
 JOIN customers C ON O.customer_id = C.customer_id
 JOIN order_details OD ON O.order_id = OD.order_id
 GROUP BY C.company_name, O.customer_id
-ORDER BY ToplamGelir DESC;
+ORDER BY total_revenue DESC;
 
 select * from order_details
 
--- En çok sipariş veren müşteriler
-SELECT C.company_name,COUNT(distinct O.order_id) AS SiparisSayisi
+-- companies with the most orders
+SELECT C.company_name,COUNT(distinct O.order_id) AS order_numbers
 FROM Orders O
 JOIN Customers C ON O.customer_id = C.customer_id
 JOIN order_details OD ON O.order_id = OD.order_id
 GROUP BY C.company_name, O.customer_id
-ORDER BY SiparisSayisi DESC;
+ORDER BY order_numbers DESC;
 	
---Müşterinin en çok tercih ettiği ürün
-SELECT P.product_name, OD.product_id, SUM(OD.Quantity) AS ToplamSiparisMiktari
+--Customer's most preferred product
+SELECT P.product_name, OD.product_id, SUM(OD.Quantity) AS total_order_quantity
 FROM order_details OD
 JOIN products P ON OD.product_id = P.product_id
 GROUP BY P.product_name, OD.product_id
-ORDER BY ToplamSiparisMiktari DESC
+ORDER BY total_order_quantity DESC
 LIMIT 1;
 
---Hangi ülkenin müşterisi en fazla siparişi vermiş
-SELECT o.ship_country, COUNT(O.order_ID) AS SiparisSayisi
+--Which country's customers placed the most orders?
+SELECT o.ship_country, COUNT(O.order_ID) AS order_numbers
 FROM orders O
 JOIN customers C ON O.customer_id = C.customer_id
 GROUP BY o.ship_country
-ORDER BY SiparisSayisi DESC
+ORDER BY order_numbers DESC
 ;
 
-SELECT C.country, COUNT(C.customer_id) AS MusteriSayisi
+SELECT C.country, COUNT(C.customer_id) AS customer_number
 FROM Customers C
 GROUP BY C.country
-ORDER BY MusteriSayisi DESC
+ORDER BY customer_number DESC
 LIMIT 1;
 
---RFM ANALİZİ ve SEGMENTASYON
+--RFM ANALYSES and SEGMENTATION
 with segment_table as(
 with tablo3 as(
 with tablo2 as( 
@@ -184,18 +184,18 @@ from tablo3
 order by score desc)
 select company_id,score,
 CASE
-            -- En değerli müşteriler (RFM Skoru: 555)
-            WHEN score = '5-5-5' THEN 'En Değerli Müşteriler'
-            -- Yeni müşteriler (Recency puanı en yüksek, Frequency ve Monetary düşük)
-            WHEN recency_score = 5 AND frequency_score <= 3 AND monetary_score <= 3 THEN 'Yeni Müşteriler'
+            -- most valuable customer (RFM Score: 555)
+            WHEN score = '5-5-5' THEN 'most valuable customer'
+            -- New customers 
+            WHEN recency_score = 5 AND frequency_score <= 3 AND monetary_score <= 3 THEN 'New Customers'
             
-            -- Kaybedilen müşteriler (Recency puanı düşük, Frequency ve Monetary düşük)
-            WHEN recency_Score <= 2 AND frequency_Score <= 2 AND monetary_score <= 2 THEN 'Kaybedilen Müşteriler'
+            -- Lost Customers 
+            WHEN recency_Score <= 2 AND frequency_Score <= 2 AND monetary_score <= 2 THEN 'Lost Customers'
             
-            -- Sık alışveriş yapan müşteriler (Frequency ve Monetary yüksek)
-            WHEN frequency_score >= 4 AND monetary_score >= 4 THEN 'Sık Alışveriş Yapanlar'
+            -- Frequent Shoppers 
+            WHEN frequency_score >= 4 AND monetary_score >= 4 THEN 'Frequent Shoppers'
             
-            ELSE 'Diğer'
+            ELSE 'other'
         END AS Segment
 		from score)
 		select company_name,Segment
@@ -208,10 +208,10 @@ CASE
 
 
 
----ÇALIŞAN ANALİZİ
+---EMPLOYEE ANALYSES
 
 
---Her çalışan ne kadar satmış
+--sales amounts of employees
 SELECT 
     e.employee_id,
     e.first_name,
@@ -228,7 +228,7 @@ GROUP BY
 ORDER BY 
     TotalSales DESC;
 	
----Her çalışan kaç adet satmış
+---Sales numbers of employees
 
 SELECT 
     e.employee_id,
@@ -246,7 +246,7 @@ GROUP BY
 ORDER BY 
     TotalQuantitySold DESC;
 	
-----Her çalışan hangi müşterilere satmış
+----Which customers did each employee sell to
 
 SELECT 
     e.employee_id,
@@ -264,13 +264,13 @@ GROUP BY
 ORDER BY 
     TotalCustomers DESC;
 
----- Çalışanların ay bazında gelir durumu
+---- monthly income status of employees
 SELECT
     e.employee_id,
     e.first_name,
     e.last_name,
-    EXTRACT(YEAR FROM o.order_date) as yil,
-    EXTRACT(MONTH FROM o.order_date) as ay,
+    EXTRACT(YEAR FROM o.order_date) as y,
+    EXTRACT(MONTH FROM o.order_date) as m,
     floor (SUM(od.unit_price * od.quantity * (1 - od.discount))) MonthlyRevenue
 FROM
     orders o
@@ -282,13 +282,13 @@ GROUP BY
     e.employee_id, e.first_name, e.last_name, EXTRACT(YEAR FROM o.order_date),
        EXTRACT(MONTH FROM o.order_date) 
 ORDER BY
-    e.employee_id, yil,ay;
+    e.employee_id, y,m;
 --------------------------------------------------
 
 
----LOJİSTİK ANALİZİ
+---LOGISTICS ANALYSES
 
---Siparişlerin zamanında teslim edilme oranı
+--On-time delivery rate of orders
 
 SELECT
    floor(floor(( COUNT(CASE WHEN o.shipped_date <= o.required_date THEN 1 END))) * 100.0 / (COUNT(*)))/100 AS OnTimeDeliveryRate
@@ -296,7 +296,7 @@ FROM
     Orders o;
 	
 	
---- Hangi firmanın ortalama süresi iyi
+--- average shipping times of companies
 SELECT
     o.ship_via,s.company_name,
     COUNT(CASE WHEN o.shipped_date <= o.required_date THEN 1 END) * 100.0 / COUNT(*) AS OnTimeDeliveryRate
@@ -310,7 +310,7 @@ ORDER BY
     OnTimeDeliveryRate DESC;
 	
 	
----Hangi ülkeye yollanmış ne kadar sürede yollanmış
+---Delivery times of orders by country
 WITH tablo AS (
     SELECT
         o.ship_country,
@@ -338,7 +338,7 @@ ORDER BY
     ship_country;
 	
 	
--- Nakliyecilere göre ortalama sipariş süreleri	
+-- Average order days by shippers
 SELECT
     s.shipper_id,
     s.company_name,
@@ -366,15 +366,14 @@ WHERE
 GROUP BY shipper_id;
 
 
----Sipariş başına ortalama nakliye maliyeti
-
+---Average shipping cost per order
 SELECT
     AVG(o.Freight) AS AvgFreightCostPerOrder
 FROM
     Orders o
 select * from orders
 
-------Ortalama nakliye fiyatı şirkete göre
+------Average shipping price by company
 SELECT
     s.company_name,
     AVG(o.Freight) AS AvgFreightCostPerOrder
@@ -384,7 +383,7 @@ JOIN
     shippers s ON o.ship_via = s.shipper_id	
 group by s.company_name
 
------Ülkelere göre ortalama nakliye Fiyatı
+-----Average shipping Price by country
 
 SELECT 
     ship_country,
