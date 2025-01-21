@@ -1,22 +1,20 @@
 # data_analysis_capstone_project
-🚀 İlk Veri Analizi Projem: Northwind Veri Analizi 📊
+🚀 My First Data Analysis Project: Northwind Data Analysis 📊
 
-Merhaba LinkedIn Ailem! 🌟
+Hello LinkedIn Family! 🌟
 
-Veri analizi dünyasına adım atmanın heyecanını yaşıyorum ve ilk kapsamlı projemi sizlerle paylaşmak istedim. Northwind adlı örnek bir veri seti üzerinde çalışarak satış, müşteri, çalışan ve nakliye analizleri gerçekleştirdim.
+I’m thrilled to share my first comprehensive project as I embark on my journey into the world of data analysis. I worked on the Northwind sample dataset, conducting detailed analyses on sales, customers, employees, and shipping.
 
-Bu projede şunları inceledim:
-📦 Sipariş ve satış trendleri
-👥 Müşteri davranışları ve segmentasyonu
-💼 Çalışan performans analizi
-🚚 Nakliye süreleri ve gecikme analizleri
+Here’s what I explored in this project:
+📦 Order and sales trends
+👥 Customer behaviors and segmentation
+💼 Employee performance analysis
+🚚 Shipping times and delay evaluations
 
-Projeyi geliştirirken Python, SQL ve veri görselleştirme araçları kullandım. Çalışmamı detaylı bir şekilde GitHub üzerinde yayınladım:
+I utilized Python, SQL, and data visualization tools throughout this project. You can check out my detailed work on GitHub:
 
-👉 Projemi İncelemek İçin Tıklayın
+👉 Click Here to Explore My Project
 
-Veri analizi konusunda öğrenmeye ve kendimi geliştirmeye devam ediyorum. Görüşleriniz, önerileriniz veya katkılarınız olursa mutlaka benimle paylaşın. 😊
+I’m excited to continue learning and improving in data analysis. Please feel free to share your thoughts, suggestions, or contributions. 😊
 
-🌟 Yeni projeler ve heyecan verici işler için buradayım. Bu yolculukta yanımda olduğunuz için teşekkür ederim!
-
-#DataAnalytics #Python #SQL #NorthwindAnalysis #YeniBaşlangıçlar
+🌟 I’m here for new projects and exciting opportunities. Thank you for being part of this journey!
