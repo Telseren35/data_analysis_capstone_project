@@ -13,8 +13,6 @@ Here’s what I explored in this project:
 
 I utilized Python, SQL, and data visualization tools throughout this project. You can check out my detailed work on GitHub:
 
-👉 Click Here to Explore My Project
-
 I’m excited to continue learning and improving in data analysis. Please feel free to share your thoughts, suggestions, or contributions. 😊
 
 🌟 I’m here for new projects and exciting opportunities. Thank you for being part of this journey!
